@@ -41,6 +41,7 @@ group :development, :test do
   gem 'webrat'
   gem 'spork'
   gem 'autotest'
+  gem 'annotate'
 end
 
 
