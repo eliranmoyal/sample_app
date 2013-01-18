@@ -42,6 +42,7 @@ group :development, :test do
   gem 'spork'
   gem 'autotest'
   gem 'annotate'
+  gem 'factory_girl_rails'
 end
 
 
