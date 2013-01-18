@@ -137,6 +137,36 @@ describe User do
 			it "should exist" do
 				@user.should respond_to(:has_password?)
 			end
+
+			it "should return true if the password match" do
+				@user.has_password?(@attr[:password]).should be_true	
+			end
+
+			it "should return false if the password did not match" do
+				@user.has_password?("invalid").should be_false
+			end
+
+		end
+
+		describe "authenticate method" do
+
+			it "should exist" do
+				User.should respond_to(:authenticate)
+			end
+
+			it "should return nil if email/password mismatch" do
+				User.authenticate(@attr[:email],"wrongpass").should be_nil
+			end
+
+			it "should return nil if there is no such user" do
+				User.authenticate("no@email.com",@attr[:password]).should be_nil
+			end
+
+			it "should return the user if email/password match" do
+				User.authenticate(@attr[:email],@attr[:password]).should == @user
+			end
+
+
 		end
 		
 	end

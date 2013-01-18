@@ -11,8 +11,8 @@
 #
 
 class User < ActiveRecord::Base
-  attr_accessible :email, :name, :password , :password_confirmation
-  attr_accessor :password,:salt
+  attr_accessible :email, :name, :password , :password_confirmation,:salt
+  attr_accessor :password
 
   email_regex = /\A[\w+.\-]+@[a-z\d\-]+(\.[a-z]+)+\z/i
   validates :name , :presence => true ,
@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   before_save :encrypt_password
 
   def User.authenticate(email,submitted_password)
-    user == find_be_email(email)
+    user = find_by_email(email)
     return nil if user.nil?
     return user if user.has_password?(submitted_password)
   end
