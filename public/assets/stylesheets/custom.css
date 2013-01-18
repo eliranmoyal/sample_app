@@ -108,3 +108,27 @@ footer nav {
 section h1 {
 	font-size: 200%;
 }
+
+/*profile page*/
+
+table.profile {
+	width: 100%;
+	margin-bottom: 0;
+}
+
+td.main {
+	width: 70%;
+	padding: 1em;
+}
+
+.profile img.gravatar {
+	border: 1px solid #999;
+	margin-bottom: -15px;
+}
+
+td.sidebar {
+	width: 30%;
+	vertical-align: top;
+	background:#ffc	;
+	padding: 1em; 
+}
