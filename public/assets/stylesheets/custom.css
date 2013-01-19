@@ -132,3 +132,9 @@ td.sidebar {
 	background:#ffc	;
 	padding: 1em; 
 }
+
+/*sign up*/
+
+div.field , div.action {
+	margin-bottom: 10px;
+}
