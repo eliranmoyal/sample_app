@@ -16,3 +16,4 @@
 
 # ignore aptana studio file
 /.project
+webrat.log
