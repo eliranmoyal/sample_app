@@ -105,6 +105,16 @@ describe UsersController do
 				post 'create' , :user =>@attr
 				response.should redirect_to(user_path(assigns(:user)))
 			end
+
+			it "should have a welcome message" do
+				post 'create' , :user =>@attr
+				flash[:success] =~ /welcome/i				
+			end
+
+			it "should be sign in" do
+				post 'create' , :user => @attr
+				controller.should be_signed_in
+			end
 			
 		end
 		
