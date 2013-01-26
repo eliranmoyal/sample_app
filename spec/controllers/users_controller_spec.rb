@@ -143,6 +143,7 @@ describe UsersController do
 			response.should have_selector('a' , :href => "http://gravatar.com/emails",
 				:content => "change")
 		end
+
 	end
 
 
@@ -203,6 +204,25 @@ describe UsersController do
 				flash[:success] =~ /update succeded/i
 			end
 		end
+	end
+
+	describe "authentication of update/edit actions" do
+		
+		before(:each) do
+			@user = FactoryGirl.create(:user)
+		end
+
+		it "should deny accsess to 'edit'" do
+			get :edit , :id => @user 
+			response.should redirect_to(signin_path)
+			flash[:notice] =~ /sign in/i
+		end
+
+		it "should deny accsess to 'edit'" do
+			put :update , :id => @user 
+			response.should redirect_to(signin_path)
+		end
+
 	end
 
 
