@@ -211,17 +211,37 @@ describe UsersController do
 		before(:each) do
 			@user = FactoryGirl.create(:user)
 		end
+		describe "for non-signed-users" do
+			it "should deny accsess to 'edit'" do
+				get :edit , :id => @user 
+				response.should redirect_to(signin_path)
+				flash[:notice] =~ /sign in/i
+			end
 
-		it "should deny accsess to 'edit'" do
-			get :edit , :id => @user 
-			response.should redirect_to(signin_path)
-			flash[:notice] =~ /sign in/i
+			it "should deny accsess to 'edit'" do
+				put :update , :id => @user 
+				response.should redirect_to(signin_path)
+			end
 		end
 
-		it "should deny accsess to 'edit'" do
-			put :update , :id => @user 
-			response.should redirect_to(signin_path)
+		describe "for signed-in user" do
+			before(:each) do
+				wrong_user = FactoryGirl.create(:user, :email => "other@email.com")
+				test_sign_in(wrong_user)
+			end
+
+			it "should require matching users for 'edit'" do
+				get :edit , :id => @user 
+				response.should redirect_to(root_path)
+			end
+
+
+			it "should require matching users for 'update'" do
+				put :update , :id => @user  , :user => {}
+				response.should redirect_to(root_path)
+			end
 		end
+		
 
 	end
 

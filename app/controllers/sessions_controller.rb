@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
 			render 'new'
 		else
 			sign_in(user)
-			redirect_to user_path(User.find_by_email(params[:session][:email]))
+			redirect_back_or(user)
 		end
 	end
 
