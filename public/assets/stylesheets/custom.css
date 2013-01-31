@@ -178,3 +178,11 @@ div.field , div.action {
 	color: #fff;
 	background-color: red;
 }
+
+.users li {
+	list-style: none;
+}
+
+.users li img.gravatar {
+	margin-bottom: -2px;
+}
