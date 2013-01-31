@@ -15,6 +15,11 @@ describe UsersController do
 			before(:each) do 
 				test_sign_in FactoryGirl.create(:user)
 				FactoryGirl.create(:user , :email =>"someother@example.com")
+
+				30.times do
+					FactoryGirl.create(:user , :email => FactoryGirl.generate(:email))
+				end
+
 			end
 
 			it "should return success" do
