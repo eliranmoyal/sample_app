@@ -8,6 +8,8 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  encrypted_password :string(255)
+#  salt               :string(255)
+#  admin              :boolean          default(FALSE)
 #
 
 require 'spec_helper'
@@ -169,6 +171,24 @@ describe User do
 
 		end
 		
+	end
+
+	describe "addmin attribute" do
+		before(:each) do
+		@user = FactoryGirl.create(:user)
+		end
+
+		it "should respond to admin" do
+			@user.should respond_to(:admin)
+		end
+
+		it "should not be admin by default" do
+			@user.should_not be_admin
+		end
+		it "should be convertable to admin" do
+			@user.toggle!(:admin)
+			@user.should be_admin
+		end
 	end
 
 
