@@ -12,8 +12,9 @@ describe UsersController do
 		end
 		describe "when signed-in" do
 			
-			before(:each) do 
-				test_sign_in FactoryGirl.create(:user)
+			before(:each) do
+				@user =  FactoryGirl.create(:user)
+				test_sign_in @user
 				FactoryGirl.create(:user , :email =>"someother@example.com")
 
 				30.times do
@@ -46,6 +47,22 @@ describe UsersController do
 				response.should have_selector('a',:href => "/users?page=2" , :content =>"2")
 				response.should have_selector('a',:href => "/users?page=2" , :content =>"Next")
 			end
+
+			it "should have delete link for admin" do
+				@user.toggle!(:admin)
+				other_user = User.all.second
+				get :index
+				response.should have_selector('a',:href => user_path(other_user) , 
+					:content => "delete" )
+			end
+
+			it "should have delete link for admin" do
+				other_user = User.all.second
+				get :index
+				response.should_not have_selector('a',:href => user_path(other_user) , 
+					:content => "delete" )
+			end
+
 		end
 	end
 	describe "GET 'show'" do
@@ -288,6 +305,27 @@ describe UsersController do
 		end
 		
 
+	end
+
+	describe "DELETE 'destroy'" do
+		before(:each) do
+			@user = FactoryGirl.create(:user)
+		end
+
+		describe "for not signed-in user" do
+			it "should deny accsess" do
+				delete :destroy , :id => @user 
+				response.should redirect_to(signin_path)
+			end
+		end
+
+		describe "as not admin user" do
+			it "should deny access" do
+				test_sign_in (@user)
+				delete :destroy , :id => @user
+				response.should redirect_to root_path
+			end
+		end
 	end
 
 
