@@ -24,7 +24,7 @@ describe User do
 			:password_confirmation => "Password"
 		}
 	end
-  
+
 	it "should create a new instance given a valid attribute" do
 		User.create!(@attr)
 	end
@@ -175,7 +175,7 @@ describe User do
 
 	describe "addmin attribute" do
 		before(:each) do
-		@user = FactoryGirl.create(:user)
+			@user = FactoryGirl.create(:user)
 		end
 
 		it "should respond to admin" do
@@ -188,6 +188,31 @@ describe User do
 		it "should be convertable to admin" do
 			@user.toggle!(:admin)
 			@user.should be_admin
+		end
+	end
+
+	describe "microposts attribute" do
+		before(:each) do
+			@user = FactoryGirl.create(:user)
+			@mp1 = FactoryGirl.create(:micropost,:user => @user , :created_at => 1.day.ago)
+			@mp2 = FactoryGirl.create(:micropost,:user => @user , :created_at => 1.hour.ago)
+		end
+
+		it "should respond to microposts" do
+			@user.should respond_to(:microposts)
+		end
+
+		it "should have the right micropost in the right order" do
+			@user.microposts.should == [@mp2,@mp1]
+		end
+
+		it "should destroy associated microposts" do
+			@user.destroy
+			[@mp1,@mp2].each do |m|
+				lambda do 
+					Micropost.find(m.id)
+				end.should raise_error(ActiveRecord::RecordNotFound)
+			end 
 		end
 	end
 
