@@ -24,8 +24,8 @@ describe UsersController do
 			end
 
 			it "should return success" do
-					get :index
-					response.should be_success
+				get :index
+				response.should be_success
 			end
 
 			it "should have the right title" do
@@ -100,6 +100,29 @@ describe UsersController do
 			get 'show', :id => @user
 			response.should have_selector('td>a', :content => user_path(@user),
 				:href => user_path(@user))
+		end
+
+		it "should have correct number of microposts in table" do
+			10.times do
+				FactoryGirl.create(:micropost,:user => @user , :content => "foo")
+			end
+			get 'show', :id => @user
+			response.should have_selector('td.sidebar', :content => @user.microposts.count.to_s)
+		end
+
+		it "should show users" do
+			mp1 = FactoryGirl.create(:micropost,:user => @user , :content => "hey")
+			mp2 = FactoryGirl.create(:micropost,:user => @user , :content => "bye")
+			get :show , :id => @user
+			response.should have_selector('span.content' , :content => mp1.content)
+			response.should have_selector('span.content' , :content => mp2.content)
+		end
+		it "should paginate users" do
+			35.times do
+				FactoryGirl.create(:micropost,:user => @user , :content => "hey")
+			end
+			get :show , :id => @user
+			response.should have_selector('div.pagination')
 		end
 
 	end
@@ -328,10 +351,10 @@ describe UsersController do
 		end
 		describe "as an admin user" do
 
-		before(:each) do
-			@admin = FactoryGirl.create(:user ,:email => "admin@example.com" , :admin => true)
-			test_sign_in(@admin)
-		end
+			before(:each) do
+				@admin = FactoryGirl.create(:user ,:email => "admin@example.com" , :admin => true)
+				test_sign_in(@admin)
+			end
 
 			it "should destroy user" do
 				lambda do
