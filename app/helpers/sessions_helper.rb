@@ -24,21 +24,21 @@ module SessionsHelper
 
 	def deny_access
 		store_location
-      redirect_to signin_path , :notice => "Please sign in to access this page"
-    end
+		redirect_to signin_path , :notice => "Please sign in to access this page"
+	end
 
-    def store_location
-    	session[:return_to] = request.fullpath
-    end
+	def store_location
+		session[:return_to] = request.fullpath
+	end
 
-    def redirect_back_or(default)
-    	redirect_to(session[:return_to] || default)
-    	clear_return_to
-    end
+	def redirect_back_or(default)
+		redirect_to(session[:return_to] || default)
+		clear_return_to
+	end
 
 	private 
 	def user_from_remember_token
-	 	User.authenticate_with_salt(*remember_token)
+		User.authenticate_with_salt(*remember_token)
 	end
 
 	def clear_return_to
@@ -51,5 +51,9 @@ module SessionsHelper
 
 	def signed_in?
 		!current_user.nil?
+	end
+
+	def authecticate
+		deny_access unless signed_in?
 	end
 end

@@ -4,6 +4,7 @@ SampleApp::Application.routes.draw do
 
   resources :users
   resources :sessions, :only => [:create, :new, :destroy]
+  resources :microposts, :only => [:create, :destroy]
 
   root :to => 'pages#home'
 
