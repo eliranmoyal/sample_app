@@ -61,4 +61,39 @@ describe MicropostsController do
 			end
 		end
 	end
+
+	describe "DELETE 'destroy'" do
+		describe "for unauthorized user" do
+			before(:each) do
+				@user = FactoryGirl.create(:user)
+				bad_user = FactoryGirl.create(:user,:email => FactoryGirl.generate(:email))
+				@mp1 = FactoryGirl.create(:micropost , :user => @user)	
+				test_sign_in(bad_user)
+			end
+			it "should deny accssess" do
+				delete :destroy , :id => @mp1
+				response.should redirect_to root_path
+			end
+		end
+
+		describe "for an authorized user" do
+			before(:each) do
+				@user = FactoryGirl.create(:user)
+				@mp = FactoryGirl.create(:micropost , :user => @user)	
+				test_sign_in(@user)
+			end
+
+			it "should destroy the micropost" do
+				lambda do
+					delete :destroy , :id => @mp
+					response.should redirect_to root_path
+					flash[:success].should =~ /micropost deleted/i
+				end.should change(Micropost,:count).by(-1)
+			end
+
+			it "should redirect" do
+				
+			end
+		end
+	end
 end
