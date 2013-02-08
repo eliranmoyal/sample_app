@@ -26,5 +26,11 @@ namespace :db do
 				user.microposts.create!(:content => Faker::Lorem.sentence(5))
 			end
 		end 
+		users = User.all
+		followers = users[2..6]
+		following = users[2..40]
+		user = User.first
+		followers.each { |follower| follower.follow!(user)  }
+		following.each { |followed| user.follow!(followed)}
 	end
 end
