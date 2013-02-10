@@ -2,7 +2,7 @@ module ApplicationHelper
   
   #return a title 
   def title
-    base_title = "Ruby Sample App"
+    base_title = "Eliran Twitter"
     if @title.nil?
       base_title
     else 

@@ -5,7 +5,7 @@
    
 
    before(:each) do
-    @baseTitle = 'Ruby Sample App'
+    @baseTitle = 'Eliran Twitter'
   end
 
   describe "GET 'home'" do
