@@ -2,16 +2,16 @@
 <table Summary="stats user">
 	<tr>
 		<td >
-			<span class="following">
-				<a href="<%= following_user_path(@user.id) %>" >
+			<span class="stat" >
+				<a href="<%= following_user_path(@user.id) %>"  id="following">
 					<%= @user.following.count %> following
 				</a>
 			</span>
 		</td>
 
 		<td >
-			<span class="followers">
-				<a href="<%= followers_user_path(@user.id) %>" >
+			<span class="stat" >
+				<a href="<%= followers_user_path(@user.id) %>" id="followers">
 					<%= pluralize(@user.followers.count,"follower") %>
 				</a>
 			</span>
