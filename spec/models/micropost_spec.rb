@@ -12,7 +12,7 @@
 require 'spec_helper'
 
 describe Micropost do
-  
+
   before(:each) do
   	@user = FactoryGirl.create(:user)
   	@attr = {:content => "hello all" }
@@ -52,6 +52,30 @@ describe Micropost do
   	it "should reject long content" do
   		@user.microposts.build(:content => "a"*141).should_not be_valid
   	end
+  end
+
+  describe "from user followed by" do
+
+    before(:each) do
+      @followed = FactoryGirl.create(:user , :email=>FactoryGirl.generate(:email))
+      @other_user = FactoryGirl.create(:user , :email=>FactoryGirl.generate(:email))
+      @user_micropost = @user.microposts.create!(:content => "hey")
+      @followed_micropost = @followed.microposts.create!(:content => "bye")
+      @other_user_micropost = @other_user.microposts.create!(:content => "why")
+      @user.follow!(@followed)
+    end
+
+    it "should show the user microposts" do
+        Micropost.from_user_followed_by(@user).should include(@user_micropost)
+    end
+
+    it "should show the users followed micropost" do
+      Micropost.from_user_followed_by(@user).should include(@followed_micropost)
+    end
+
+    it "should not show the other user micropost" do
+      Micropost.from_user_followed_by(@user).should_not include(@other_user_micropost)
+    end
   end
 
 end
